@@ -10,11 +10,11 @@ endif()
 # find dependencies
 find_package(ament_cmake REQUIRED)
 find_package(rclcpp REQUIRED)
-find_package(std_msgs REQUIRED)
+find_package(geometry_msgs REQUIRED)
 find_package(sensor_msgs REQUIRED)
 
 add_executable(tb_movement src/movement.cpp)
-ament_target_dependencies(tb_movement rclcpp std_msgs sensor_msgs)
+ament_target_dependencies(tb_movement rclcpp geometry_msgs sensor_msgs)
 
 install(TARGETS
   tb_movement
