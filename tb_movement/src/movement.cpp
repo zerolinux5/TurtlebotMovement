@@ -22,8 +22,7 @@ class Movement: public rclcpp::Node
     }
     private:
     void receiveFromController(sensor_msgs::msg::Joy::SharedPtr msg) {
-        RCLCPP_INFO(this->get_logger(), "I heard from ANGULAR: '%f'", msg->axes[ANGULAR]);
-        RCLCPP_INFO(this->get_logger(), "I heard from LINEAR: '%f'", msg->axes[LINEAR]);
+        RCLCPP_INFO(this->get_logger(), "I heard from ANGULAR: '%f' | LINEAR: '%f'", msg->axes[ANGULAR], msg->axes[LINEAR]);
         auto message = geometry_msgs::msg::TwistStamped();
         message.twist.angular.z = msg->axes[ANGULAR] * SPEED_OFFSET;
         message.twist.linear.x = msg->axes[LINEAR] * SPEED_OFFSET;
