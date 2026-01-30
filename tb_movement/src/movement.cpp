@@ -13,7 +13,7 @@ class Movement: public rclcpp::Node
 {
     public:
     Movement()
-    : Node("movement"), count_(0)
+    : Node("movement")
     {
         cmd_publisher_ = this->create_publisher<geometry_msgs::msg::TwistStamped>("/cmd_vel", 10);
         joy_subscriber_ = this->create_subscription<sensor_msgs::msg::Joy>(
@@ -30,7 +30,6 @@ class Movement: public rclcpp::Node
     };
     rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr cmd_publisher_;
     rclcpp::Subscription<sensor_msgs::msg::Joy>::SharedPtr joy_subscriber_;
-    size_t count_;
 };
 
 int main(int argc, char *argv[])
