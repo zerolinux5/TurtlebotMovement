@@ -1,5 +1,5 @@
 cmake_minimum_required(VERSION 3.8)
-project(tb_movement)
+project(tb_movement_msg)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
@@ -10,20 +10,11 @@ endif()
 
 # find dependencies
 find_package(ament_cmake REQUIRED)
-find_package(rclcpp REQUIRED)
-find_package(geometry_msgs REQUIRED)
-find_package(sensor_msgs REQUIRED)
-find_package(tb_movement_msg REQUIRED)
+find_package(rosidl_default_generators REQUIRED)
 
-add_executable(tb_movement src/movement.cpp)
-add_executable(lidar_parser src/lidar_parser.cpp)
-ament_target_dependencies(tb_movement rclcpp geometry_msgs sensor_msgs)
-ament_target_dependencies(lidar_parser rclcpp sensor_msgs tb_movement_msg)
-
-install(TARGETS
-  tb_movement
-  lidar_parser
-  DESTINATION lib/${PROJECT_NAME}
+rosidl_generate_interfaces(${PROJECT_NAME}
+  "msg/Obstacle.msg"
+  "msg/ObstacleScan.msg"
 )
 
 if(BUILD_TESTING)

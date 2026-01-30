@@ -1,0 +1,2 @@
+float32 depth_m
+float32 angle_rad

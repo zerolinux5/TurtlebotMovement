@@ -4,6 +4,8 @@
 #include "rclcpp/rclcpp.hpp"
 #include "geometry_msgs/msg/twist_stamped.hpp"
 #include "sensor_msgs/msg/laser_scan.hpp"
+#include "tb_movement_msg/msg/obstacle.hpp"
+#include "tb_movement_msg/msg/obstacle_scan.hpp"
 
 constexpr int ANGULAR = 0;
 constexpr int LINEAR = 1;
@@ -22,7 +24,7 @@ class LidarParser: public rclcpp::Node
     LidarParser()
     : Node("lidar_parser")
     {
-        // cmd_publisher_ = this->create_publisher<geometry_msgs::msg::TwistStamped>("/cmd_vel", 10);
+        scan_publisher_ = this->create_publisher<tb_movement_msg::msg::ObstacleScan>("/obstacles", 10);
         lidar_subscriber_ = this->create_subscription<sensor_msgs::msg::LaserScan>(
             "/scan", 10, [this](sensor_msgs::msg::LaserScan::SharedPtr msg){ receiveFromLidar(msg); }
         );
@@ -46,12 +48,18 @@ class LidarParser: public rclcpp::Node
             auto& ray = buf[idx];
             RCLCPP_INFO(this->get_logger(), "- Distance: %f Angle: %f", ray.depth, ray.angle);
         }
-        // auto message = geometry_msgs::msg::TwistStamped();
-        // message.twist.angular.z = msg->axes[ANGULAR] * SPEED_OFFSET;
-        // message.twist.linear.x = msg->axes[LINEAR] * SPEED_OFFSET;
-        // this->cmd_publisher_->publish(message);
+        tb_movement_msg::msg::ObstacleScan scan_msg;
+        scan_msg.obstacles.reserve(n);
+
+        for (size_t idx = 0; idx < n; ++idx) {
+            tb_movement_msg::msg::Obstacle o;
+            o.depth_m = buf[idx].depth;
+            o.angle_rad = buf[idx].angle;
+            scan_msg.obstacles.push_back(o);
+        }
+        scan_publisher_->publish(scan_msg);
     };
-    // rclcpp::Publisher<geometry_msgs::msg::TwistStamped>::SharedPtr cmd_publisher_;
+    rclcpp::Publisher<tb_movement_msg::msg::ObstacleScan>::SharedPtr scan_publisher_;
     rclcpp::Subscription<sensor_msgs::msg::LaserScan>::SharedPtr lidar_subscriber_;
     size_t start_idx_;
 };
