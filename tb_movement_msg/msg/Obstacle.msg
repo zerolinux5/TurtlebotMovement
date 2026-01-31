@@ -1,2 +1,2 @@
-float32 depth_m
-float32 angle_rad
+float32 closest_front_m
+float32 closest_back_m
