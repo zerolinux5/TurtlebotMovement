@@ -17,12 +17,15 @@ find_package(tb_movement_msg REQUIRED)
 
 add_executable(tb_movement src/movement.cpp)
 add_executable(lidar_parser src/lidar_parser.cpp)
+add_executable(local_planner src/local_planner.cpp)
 ament_target_dependencies(tb_movement rclcpp geometry_msgs sensor_msgs)
 ament_target_dependencies(lidar_parser rclcpp sensor_msgs tb_movement_msg)
+ament_target_dependencies(local_planner rclcpp geometry_msgs tb_movement_msg)
 
 install(TARGETS
   tb_movement
   lidar_parser
+  local_planner
   DESTINATION lib/${PROJECT_NAME}
 )
 

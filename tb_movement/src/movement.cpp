@@ -15,7 +15,7 @@ class Movement: public rclcpp::Node
     Movement()
     : Node("movement")
     {
-        cmd_publisher_ = this->create_publisher<geometry_msgs::msg::TwistStamped>("/cmd_vel", 10);
+        cmd_publisher_ = this->create_publisher<geometry_msgs::msg::TwistStamped>("/raw_reading", 10);
         joy_subscriber_ = this->create_subscription<sensor_msgs::msg::Joy>(
             "/joy", 10, [this](sensor_msgs::msg::Joy::SharedPtr msg){ receiveFromController(msg); }
         );
