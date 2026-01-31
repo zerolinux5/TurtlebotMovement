@@ -8,6 +8,16 @@ To build
 colcon build
 ```
 To then run
+
+Joystick to Movement
 ```
 ros2 run tb_movement tb_movement
+```
+LiDAR to obstacle
+```
+ros2 run tb_movement lidar_parser
+```
+Movement to Local Planner that sends the final move command
+```
+ros2 run tb_movement local_planner
 ```
